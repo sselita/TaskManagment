@@ -1,4 +1,5 @@
 ﻿using System.Data.SqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace TaskManagment
 {
@@ -102,6 +103,44 @@ namespace TaskManagment
 
             return tasks;
         }
+      
+        public List<Task> GetAdminTask()
+        {
+            List<Task> tasks = new List<Task>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection("Server=localhost;Database=WorkTaskDB;Trusted_Connection=True;"))
+                {
+                    connection.Open();
+
+                    string query = "SELECT Id,Title,Description FROM Tasks ";
+                    SqlCommand command = new SqlCommand(query, connection);
+                  
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Task task = new Task
+                            {
+                                Id = reader.GetInt32(0),
+                                
+                               Title = reader.GetString(1),   // Name
+                              Description = reader.GetString(2)
+
+                            };
+                            tasks.Add(task);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+
+            return tasks;
+        }
         private void InitializeAdminComponent()
         {
             this.btnAddTask = new System.Windows.Forms.Button();
@@ -135,11 +174,17 @@ namespace TaskManagment
             // 
             // lstTasks
             // 
-            this.lstTasks.FormattingEnabled = true;
-            this.lstTasks.Location = new System.Drawing.Point(20, 100);
-            this.lstTasks.Name = "lstTasks";
-            this.lstTasks.Size = new System.Drawing.Size(260, 160);
-            this.lstTasks.TabIndex = 2;
+            lstTasks.FormattingEnabled = true;
+          lstTasks.Location = new System.Drawing.Point(20, 100);
+          lstTasks.Name = "lstTasks";
+           lstTasks.Size = new System.Drawing.Size(260, 160);
+         //  lstTasks.TabIndex = 2;
+            var tasks = GetAdminTask();
+
+            lstTasks.DataSource = tasks;
+         
+          
+
 
             // 
             // lblTasks

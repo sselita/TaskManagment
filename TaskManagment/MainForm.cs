@@ -15,8 +15,10 @@ namespace TaskManagment
             if (username is null || username == "Admin")
             {
                 InitializeAdminComponent();
+              
             }
             else InitializeComponent(username);
+         
 
         }
    
@@ -25,14 +27,14 @@ namespace TaskManagment
         {
             lstTasks.Items.Clear(); // Clear existing items
 
-            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["TaskAppDB"].ConnectionString;
+        
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 try
                 {
                     connection.Open();
-                    string query = "SELECT TaskName, Department, Status FROM Tasks";
+                    string query = "SELECT Title, Description FROM Tasks";
 
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
@@ -40,7 +42,7 @@ namespace TaskManagment
                         {
                             while (reader.Read())
                             {
-                                string task = $"Name: {reader["TaskName"]}, Dept: {reader["Department"]}, Status: {reader["Status"]}";
+                                string task = $"Name: {reader["Title"]}, Dept: {reader["Description"]}";
                                 lstTasks.Items.Add(task);
                             }
                         }
