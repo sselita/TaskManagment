@@ -39,7 +39,7 @@
             txtUsername.Location = new Point(23, 27);
             txtUsername.Margin = new Padding(3, 4, 3, 4);
             txtUsername.Name = "txtUsername";
-            txtUsername.PlaceholderText = "Username";
+            txtUsername.PlaceholderText = "Email";
             txtUsername.Size = new Size(228, 27);
             txtUsername.TabIndex = 0;
             // 

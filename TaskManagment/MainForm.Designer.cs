@@ -1,4 +1,6 @@
-﻿namespace TaskManagment
+﻿using System.Data.SqlClient;
+
+namespace TaskManagment
 {
     partial class MainForm
     {
@@ -17,7 +19,7 @@
             base.Dispose(disposing);
         }
 
-        private void InitializeComponent()
+        private void InitializeComponent(string username)
         {
             this.btnAddTask = new System.Windows.Forms.Button();
         
@@ -39,6 +41,7 @@
             this.lstTasks.Name = "lstTasks";
             this.lstTasks.Size = new System.Drawing.Size(260, 160);
             this.lstTasks.TabIndex = 2;
+            this.lstTasks.DataSource = GetTaskByUsername(username);
 
          
             this.lblTasks.AutoSize = true;
@@ -47,6 +50,7 @@
             this.lblTasks.Size = new System.Drawing.Size(42, 15);
             this.lblTasks.TabIndex = 3;
             this.lblTasks.Text = "Tasks:";
+
 
             // 
             // MainForm
@@ -60,6 +64,43 @@
             this.Text = "Task Manager";
             this.ResumeLayout(false);
             this.PerformLayout();
+        }
+        public List<Task> GetTaskByUsername(string username)
+        {
+            List<Task> tasks = new List<Task>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection("Server=localhost;Database=WorkTaskDB;Trusted_Connection=True;"))
+                {
+                    connection.Open();
+
+                    string query = "SELECT t.* FROM Tasks t INNER JOIN Employees e ON t.EmployeeId = e.Id INNER JOIN Users u ON e.Email = u.Email WHERE u.Email = @UserName; ";
+                    SqlCommand command = new SqlCommand(query, connection);
+                    command.Parameters.AddWithValue("@UserName", username);
+                    using (SqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Task task = new Task();
+                            {
+                                //Name = reader.GetString(0),    // Name
+                                //BasePrice = reader.GetDouble(1), // BasePrice
+                                //BreadType = (BreadType)Enum.Parse(typeof(BreadType), reader.GetString(2)),
+                                //Id = reader.GetInt32(3)
+
+                            };
+                            tasks.Add(task);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+            }
+
+            return tasks;
         }
         private void InitializeAdminComponent()
         {

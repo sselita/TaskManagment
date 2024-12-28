@@ -54,9 +54,9 @@ namespace TaskManagment
                         if (result == 1)
                         {
                             MessageBox.Show("Login successful!");
-                         //   GlobalUser.CurrentUser = username;
+                        //    GlobalUser.CurrentUser = username;
                             MainForm mainForm = new MainForm(username);
-                          
+                            
                             mainForm.Show();
                             this.Hide(); // Hide the login form
                         }
@@ -72,7 +72,7 @@ namespace TaskManagment
                 }
             }
         }
-
+     
         private void Register_Click(object sender, EventArgs e)
         {
             Register register = new Register();

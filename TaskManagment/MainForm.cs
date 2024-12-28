@@ -16,7 +16,7 @@ namespace TaskManagment
             {
                 InitializeAdminComponent();
             }
-            else InitializeComponent();
+            else InitializeComponent(username);
 
         }
    
