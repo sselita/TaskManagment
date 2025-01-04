@@ -23,7 +23,7 @@ namespace TaskManagment
 
         public override string ToString()
         {
-            return $"Task : {Title} - status : {status}"; // Custom format for display
+            return $"Task : {Title} - status : {status} - Description : {Description}"; // Custom format for display
         }
 
     }

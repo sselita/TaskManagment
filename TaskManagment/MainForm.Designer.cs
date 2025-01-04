@@ -19,32 +19,48 @@ namespace TaskManagment
             }
             base.Dispose(disposing);
         }
+        private System.Windows.Forms.ComboBox cmbStatus; // ComboBox for status
 
         private void InitializeComponent(string username)
         {
             this.btnAddTask = new System.Windows.Forms.Button();
-        
             this.lstTasks = new System.Windows.Forms.ListBox();
             this.lblTasks = new System.Windows.Forms.Label();
+            this.cmbStatus = new System.Windows.Forms.ComboBox();
 
-      
+            // 
+            // btnAddTask
+            // 
             this.btnAddTask.Location = new System.Drawing.Point(20, 20);
             this.btnAddTask.Name = "btnAddTask";
             this.btnAddTask.Size = new System.Drawing.Size(120, 40);
             this.btnAddTask.TabIndex = 0;
             this.btnAddTask.Text = "Update Task";
             this.btnAddTask.UseVisualStyleBackColor = true;
-            this.btnAddTask.Click += new System.EventHandler(this.btnAddTask_Click);
+            this.btnAddTask.Click += new System.EventHandler(this.UpdateTaskButton_Click);
 
-            
+            // 
+            // cmbStatus
+            // 
+            this.cmbStatus.Location = new System.Drawing.Point(160, 30); // Adjusted position
+            this.cmbStatus.Name = "cmbStatus";
+            this.cmbStatus.Size = new System.Drawing.Size(120, 23);
+            this.cmbStatus.TabIndex = 1;
+            this.cmbStatus.Items.AddRange(new string[] { "Open", "In_Progress", "Completed", "Blocked", "Cancelled" });
+
+            // 
+            // lstTasks
+            // 
             this.lstTasks.FormattingEnabled = true;
             this.lstTasks.Location = new System.Drawing.Point(20, 100);
             this.lstTasks.Name = "lstTasks";
-            this.lstTasks.Size = new System.Drawing.Size(260, 160);
+            this.lstTasks.Size = new System.Drawing.Size(460, 160); // Increased width
             this.lstTasks.TabIndex = 2;
             this.lstTasks.DataSource = GetTaskByUsername(username);
 
-         
+            // 
+            // lblTasks
+            // 
             this.lblTasks.AutoSize = true;
             this.lblTasks.Location = new System.Drawing.Point(20, 80);
             this.lblTasks.Name = "lblTasks";
@@ -52,20 +68,20 @@ namespace TaskManagment
             this.lblTasks.TabIndex = 3;
             this.lblTasks.Text = "Tasks:";
 
-
             // 
             // MainForm
             // 
-            this.ClientSize = new System.Drawing.Size(300, 300);
+            this.ClientSize = new System.Drawing.Size(500, 300); // Increased width
+            this.Controls.Add(this.cmbStatus);
             this.Controls.Add(this.lblTasks);
             this.Controls.Add(this.lstTasks);
-            this.Controls.Add(this.btnExportEmployees);
             this.Controls.Add(this.btnAddTask);
             this.Name = "MainForm";
             this.Text = "Task Manager";
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
         public List<Task> GetTaskByUsername(string username)
         {
             List<Task> tasks = new List<Task>();
@@ -76,21 +92,21 @@ namespace TaskManagment
                 {
                     connection.Open();
 
-                    string query = "SELECT t.* FROM Tasks t INNER JOIN Employees e ON t.EmployeeId = e.Id INNER JOIN Users u ON e.Email = u.Email WHERE u.Email = @UserName; ";
+                    string query = "SELECT t.Id , t.Title , T.Description , t.Status FROM Tasks t INNER JOIN Employees e ON t.EmployeeId = e.Id INNER JOIN Users u ON e.Email = u.Email WHERE u.Email = @UserName ";
                     SqlCommand command = new SqlCommand(query, connection);
                     command.Parameters.AddWithValue("@UserName", username);
                     using (SqlDataReader reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            Task task = new Task();
+                            Task task = new Task
                             {
-                                //Name = reader.GetString(0),    // Name
-                                //BasePrice = reader.GetDouble(1), // BasePrice
-                                //BreadType = (BreadType)Enum.Parse(typeof(BreadType), reader.GetString(2)),
-                                //Id = reader.GetInt32(3)
-
+                                Title = reader.GetString(1), // Name
+                                Description = reader.GetString(2),
+                                Id = reader.GetInt32(0),
+                                status =(Status)reader.GetInt32(3)
                             };
+                          
                             tasks.Add(task);
                         }
                     }

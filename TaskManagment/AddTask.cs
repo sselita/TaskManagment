@@ -23,7 +23,10 @@ namespace TaskManagment
         {
          
             var Title = txtTitle.Text;
-
+            var desc = txtDescription.Text;
+            var status =cbStatus.SelectedItem;
+            var emp = cbEmployee.SelectedItem;
+            var ded = dtpDeadline.Text;
 
             try
             {
@@ -32,12 +35,15 @@ namespace TaskManagment
                     connection.Open();
 
 
-                    string insertQuery = "INSERT INTO Task (Title,)  VALUES (@Title,)";
+                    string insertQuery = "INSERT INTO Task (Title,Description,Status,Deadline,EmployeeId)  VALUES (@Title,@Description,@Status,@Deadline,@EmployeeId)";
                     SqlCommand sCommand = new SqlCommand(insertQuery, connection);
 
-                    double basePrice = 2.0;
-                    sCommand.Parameters.AddWithValue("@Name", Title);
-                    //sandwichCommand.Parameters.AddWithValue("@Name", Name);
+                    sCommand.Parameters.AddWithValue("@Title", Title);
+                    sCommand.Parameters.AddWithValue("@Description", desc);
+                    sCommand.Parameters.AddWithValue("@Status", status);
+                    sCommand.Parameters.AddWithValue("@Deadline", ded);
+                    sCommand.Parameters.AddWithValue("@EmployeeId", emp);
+
 
                     sCommand.ExecuteNonQuery();
                 }

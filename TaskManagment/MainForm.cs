@@ -1,6 +1,7 @@
 using System.Data.SqlClient;
 using System.Formats.Asn1;
 using System.Globalization;
+using System.Windows.Forms;
 using CsvHelper;
 using CsvHelper.Configuration;
 using OfficeOpenXml;
@@ -54,6 +55,53 @@ namespace TaskManagment
                 }
             }
         }
+        private void UpdateTaskButton_Click(object sender, EventArgs e)
+        {
+            if (lstTasks.SelectedItem is Task selectedTask)
+            {
+                if (cmbStatus.SelectedItem is  string status)
+                {
+                    try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                           
+                            Status statusss = (Status)Enum.Parse(typeof(Status), status);
+                            int intValue = (int)statusss;
+
+                            string updateQuery = "UPDATE Tasks SET Status = @Status WHERE Id = @Id";
+                        using (SqlCommand command = new SqlCommand(updateQuery, connection))
+                        {
+                            command.Parameters.AddWithValue("@Id", selectedTask.Id);
+                                command.Parameters.AddWithValue("@Status", intValue);
+                                int rowsAffected = command.ExecuteNonQuery();
+
+                            if (rowsAffected > 0)
+                            {
+                                MessageBox.Show($"Task {selectedTask.Title} updated");
+                            }
+                            else
+                            {
+                                MessageBox.Show("Task didnt update");
+                            }
+                        }
+                    }
+                
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a task ");
+            }
+        }
+        }
+      
 
         // Open the TaskForm to add a new task
         private void btnAddTask_Click(object sender, EventArgs e)
@@ -139,4 +187,5 @@ namespace TaskManagment
 
     }
 }
+
     
