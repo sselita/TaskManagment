@@ -157,7 +157,7 @@ namespace TaskManagment
                         if (!string.IsNullOrEmpty(record.first_name))
                         {
                             // Assuming Id is auto-incremented in the database, remove it from the query
-                            string query = @"INSERT INTO Employees 
+                            string query = @"INSERT INTO EmployeesCSV 
                                      (SSN, FirstName, LastName, Gender, StreetName, StreetNumber, ZipCode, City, Email)
                                      VALUES 
                                      (@SSN, @FirstName, @LastName, @Gender, @StreetName, @StreetNumber, @ZipCode, @City, @Email)";
