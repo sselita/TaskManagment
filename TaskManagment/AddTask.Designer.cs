@@ -91,7 +91,7 @@ namespace TaskManagment
             this.cbStatus.FormattingEnabled = true;
             this.cbStatus.Location = new System.Drawing.Point(100, 100);
             this.cbStatus.Name = "cbStatus";
-            this.cbStatus.Items.AddRange(new string[] { "Open", "In_progress", "Completed", "Blocked", "Cancelled" });
+            this.cbStatus.Items.AddRange(new string[] { "Open", "In_Progress", "Completed", "Blocked", "Cancelled" });
             this.cbStatus.Size = new System.Drawing.Size(200, 23);
             this.cbStatus.TabIndex = 5;
             // 

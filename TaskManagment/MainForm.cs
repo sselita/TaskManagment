@@ -109,7 +109,7 @@ namespace TaskManagment
             AddTask taskForm = new AddTask();
           
             taskForm.ShowDialog();
-
+            lstTasks.DataSource = GetAdminTask();
         }
 
         // Export employees to a CSV file

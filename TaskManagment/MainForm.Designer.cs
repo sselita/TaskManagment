@@ -130,7 +130,7 @@ namespace TaskManagment
                 {
                     connection.Open();
 
-                    string query = "SELECT Id,Title,Description FROM Tasks ";
+                    string query = "SELECT Id,Title,Description, Status FROM Tasks ";
                     SqlCommand command = new SqlCommand(query, connection);
                   
                     using (SqlDataReader reader = command.ExecuteReader())
@@ -142,7 +142,8 @@ namespace TaskManagment
                                 Id = reader.GetInt32(0),
                                 
                                Title = reader.GetString(1),   // Name
-                              Description = reader.GetString(2)
+                              Description = reader.GetString(2),
+                                status = (Status)reader.GetInt32(3)
 
                             };
                             tasks.Add(task);
@@ -167,7 +168,7 @@ namespace TaskManagment
             // 
             // btnAddTask
             // 
-            this.btnAddTask.Location = new System.Drawing.Point(20, 20);
+            this.btnAddTask.Location = new System.Drawing.Point(20, 20); // Leave some padding from the left
             this.btnAddTask.Name = "btnAddTask";
             this.btnAddTask.Size = new System.Drawing.Size(120, 40);
             this.btnAddTask.TabIndex = 0;
@@ -178,10 +179,9 @@ namespace TaskManagment
             // 
             // btnExportEmployees
             // 
-
-            this.btnExportEmployees.Location = new System.Drawing.Point(160, 20);
+            this.btnExportEmployees.Location = new System.Drawing.Point(160, 20); // Positioned next to Add Task button
             this.btnExportEmployees.Name = "btnExportEmployees";
-            this.btnExportEmployees.Size = new System.Drawing.Size(120, 40);
+            this.btnExportEmployees.Size = new System.Drawing.Size(160, 40); // Increased width for better UI
             this.btnExportEmployees.TabIndex = 1;
             this.btnExportEmployees.Text = "Export Employees";
             this.btnExportEmployees.UseVisualStyleBackColor = true;
@@ -190,23 +190,20 @@ namespace TaskManagment
             // 
             // lstTasks
             // 
-            lstTasks.FormattingEnabled = true;
-          lstTasks.Location = new System.Drawing.Point(20, 100);
-          lstTasks.Name = "lstTasks";
-           lstTasks.Size = new System.Drawing.Size(260, 160);
-         //  lstTasks.TabIndex = 2;
+            this.lstTasks.FormattingEnabled = true;
+            this.lstTasks.Location = new System.Drawing.Point(20, 100); // Below the buttons
+            this.lstTasks.Name = "lstTasks";
+            this.lstTasks.Size = new System.Drawing.Size(460, 200); // Increased width and height to match form width
+            this.lstTasks.TabIndex = 2;
+
             var tasks = GetAdminTask();
-
-            lstTasks.DataSource = tasks;
-         
-          
-
+            this.lstTasks.DataSource = tasks;
 
             // 
             // lblTasks
             // 
             this.lblTasks.AutoSize = true;
-            this.lblTasks.Location = new System.Drawing.Point(20, 80);
+            this.lblTasks.Location = new System.Drawing.Point(20, 80); // Positioned above the task list
             this.lblTasks.Name = "lblTasks";
             this.lblTasks.Size = new System.Drawing.Size(42, 15);
             this.lblTasks.TabIndex = 3;
@@ -215,7 +212,7 @@ namespace TaskManagment
             // 
             // MainForm
             // 
-            this.ClientSize = new System.Drawing.Size(300, 300);
+            this.ClientSize = new System.Drawing.Size(500, 400); // Increased form width and height
             this.Controls.Add(this.lblTasks);
             this.Controls.Add(this.lstTasks);
             this.Controls.Add(this.btnExportEmployees);
@@ -225,5 +222,6 @@ namespace TaskManagment
             this.ResumeLayout(false);
             this.PerformLayout();
         }
+
     }
 }
